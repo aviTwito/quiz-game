@@ -11,7 +11,7 @@
     </v-row>
     <v-row align="center" justify="center">
       <v-col md="6">
-        <start-game @start="startGame" />
+        <start-game @start="start" />
       </v-col>
     </v-row>
   </v-container>
@@ -19,17 +19,20 @@
 
 <script>
 // @ is an alias to /src
-// import Questions from "../components/Questions.vue";
 import Categories from "../components/CategoriesSmall.vue";
 import startGame from "../components/StartGame.vue";
+import { mapActions } from "vuex";
 export default {
   name: "Home",
   methods: {
+    ...mapActions(["setUserName", "startGame"]),
     setCategory(category) {
       this.selectedCategory = category;
     },
-    startGame(userName) {
-      console.log(userName);
+    start(userName) {
+      this.setUserName(userName);
+      this.startGame(this.selectedCategory);
+      this.$router.push("/game");
     },
   },
   data: () => ({

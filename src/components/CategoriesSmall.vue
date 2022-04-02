@@ -36,12 +36,8 @@ export default {
   }),
   watch: {
     selection(newVal) {
-      console.log(this.categories[newVal]);
       this.$emit("setCategory", this.categories[newVal]);
     },
-  },
-  mounted() {
-    console.log(this.categories);
   },
 };
 </script>
