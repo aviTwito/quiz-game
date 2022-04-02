@@ -2,8 +2,8 @@
   <v-row>
     <v-col cols="12">
       <question
-        :key="question"
-        @setAnswer="setAnswer"
+        :key="question.question"
+        @setAnswer="setAnswerState"
         v-if="question"
         :question="question"
       />
@@ -27,10 +27,11 @@ export default {
     ...mapGetters({ question: "getQuestion" }),
   },
   methods: {
-    ...mapActions(["nextQuestion"]),
-    setAnswer(answer) {
-      console.log(answer);
-      console.log(this.question.correct_answer);
+    ...mapActions(["nextQuestion", "setAnswer"]),
+    setAnswerState(answer) {
+      answer === this.question.correct_answer
+        ? this.setAnswer(true)
+        : this.setAnswer(false);
       this.questionAnswered = true;
     },
   },

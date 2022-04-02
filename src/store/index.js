@@ -14,7 +14,7 @@ export default new Vuex.Store({
   state: {
     questionsFetched: false,
     user: "",
-    score: 0,
+    totalQuestions: 0,
     answredCorrect: 0,
     answredWrong: 0,
     questions: [],
@@ -23,11 +23,17 @@ export default new Vuex.Store({
     currentQuestion: null,
   },
   mutations: {
+    resetGame(state) {
+      state.totalQuestions = 0;
+      state.answredCorrect = 0;
+      state.answredWrong = 0;
+    },
     setQuestiosFetched(state, payload) {
       state.questionsFetched = payload;
     },
     setQuestios(state, payload) {
       state.questions = payload;
+      state.totalQuestions = payload.length;
       state.questionsFetched = true;
     },
     setCategory(state, paylod) {
@@ -48,8 +54,18 @@ export default new Vuex.Store({
         state.currentQuestion = state.questions.pop();
       }
     },
+    setAnswer(state, payload) {
+      if (payload) {
+        state.answredCorrect++;
+      } else {
+        state.answredWrong++;
+      }
+    },
   },
   actions: {
+    setAnswer(state, payload) {
+      state.commit("setAnswer", payload);
+    },
     async startGame(state, category) {
       state.commit("setQuestiosFetched", false);
       const response =
@@ -92,6 +108,9 @@ export default new Vuex.Store({
   },
   modules: {},
   getters: {
+    getQuestionsCount: (state) => state.totalQuestions,
+    getWrongCount: (state) => state.answredCorrect,
+    getCorrectCount: (state) => state.answredWrong,
     getQuestion: (state) => state.currentQuestion,
     getCategories: (state) => state.categories,
   },
