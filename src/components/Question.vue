@@ -49,24 +49,22 @@
           </v-list-item-group>
         </v-list>
       </v-card-text>
-      <v-card-actions>
-        <!-- <v-col class="text-right"
-          ><vac class="circle" :left-time="30000">
-            <span
-              class="white--text text-h5"
-              slot="process"
-              slot-scope="{ timeObj }"
-            >
-              {{ timeObj.ceil.s }}
-            </span>
-          </vac></v-col
-        > -->
-      </v-card-actions>
+      <v-row no-gutters>
+        <v-col cols="5">
+          <div class="action-buttons rounded-tr-xl">
+            <v-card-actions>
+              <v-btn>50/50</v-btn>
+              <v-btn> <v-icon>mdi-timer </v-icon>+ </v-btn>
+            </v-card-actions>
+          </div>
+        </v-col>
+      </v-row>
     </v-card>
   </div>
 </template>
 
 <script>
+import { mdiCameraTimer } from "@mdi/js";
 export default {
   name: "Question",
   props: {
@@ -121,6 +119,9 @@ export default {
   },
 
   data: () => ({
+    icons: {
+      mdiCameraTimer,
+    },
     selectedItem: "",
     lockSelection: false,
   }),
@@ -128,6 +129,11 @@ export default {
 </script>
 
 <style scoped>
+.action-buttons {
+  border: 1px solid white;
+  background-color: #3456a8;
+}
+
 .circle {
   display: inline-block;
   border-radius: 50%;
