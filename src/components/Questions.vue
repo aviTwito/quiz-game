@@ -1,12 +1,13 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <question
+      <!-- <question
         :key="question.question"
         @setAnswer="setAnswerState"
         v-if="question"
         :question="question"
-      />
+      /> -->
+      <question />
     </v-col>
     <v-col v-if="questionAnswered">
       <v-btn @click="nextQuestion" primary>Next Question</v-btn></v-col

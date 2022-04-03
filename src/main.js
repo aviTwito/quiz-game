@@ -3,9 +3,9 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
-
+import vueAwesomeCountdown from "vue-awesome-countdown";
 Vue.config.productionTip = false;
-
+Vue.use(vueAwesomeCountdown, "vac");
 new Vue({
   router,
   store,

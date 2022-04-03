@@ -4,12 +4,28 @@
       <v-card shaped flat rounded outlined color="primary">
         <v-card-title class="white--text">{{ question.category }}</v-card-title>
       </v-card>
-      <v-card-title
-        style="word-break: break-word"
-        class="white--text wrap--text"
-        v-text="question.question"
-      >
-      </v-card-title>
+      <v-row>
+        <v-col cols="10">
+          <v-card-title
+            style="word-break: break-word"
+            class="white--text wrap--text"
+            v-text="question.question"
+          >
+          </v-card-title>
+        </v-col>
+        <v-col cols="2" class="text-right"
+          ><vac class="circle" :left-time="30000">
+            <span
+              class="white--text text-h5"
+              slot="process"
+              slot-scope="{ timeObj }"
+            >
+              {{ timeObj.ceil.s }}
+            </span>
+          </vac></v-col
+        >
+      </v-row>
+
       <v-card-text>
         <v-list color="#a3abbf" class="pl-2">
           <v-list-item-group
@@ -33,6 +49,19 @@
           </v-list-item-group>
         </v-list>
       </v-card-text>
+      <v-card-actions>
+        <!-- <v-col class="text-right"
+          ><vac class="circle" :left-time="30000">
+            <span
+              class="white--text text-h5"
+              slot="process"
+              slot-scope="{ timeObj }"
+            >
+              {{ timeObj.ceil.s }}
+            </span>
+          </vac></v-col
+        > -->
+      </v-card-actions>
     </v-card>
   </div>
 </template>
@@ -56,6 +85,7 @@ export default {
       },
     },
   },
+
   computed: {
     shuffledAnsers() {
       const allAnsers = [
@@ -98,6 +128,31 @@ export default {
 </script>
 
 <style scoped>
+.circle {
+  display: inline-block;
+  border-radius: 50%;
+  min-width: 20px;
+  min-height: 20px;
+  padding: 5px;
+  border: 1px solid white;
+  color: white;
+  text-align: center;
+  line-height: 1;
+  box-sizing: content-box;
+  white-space: nowrap;
+}
+.circle:before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  padding-top: 100%;
+  height: 0;
+}
+.circle span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .answer-option {
   border-style: solid;
   border-width: 1px;
