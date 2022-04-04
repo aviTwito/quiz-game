@@ -49,7 +49,7 @@
 
       <div class="action-buttons rounded-tr-xl">
         <v-card-actions>
-          <v-btn>50/50</v-btn>
+          <v-btn @click="handleFifthyFiftyh">50/50</v-btn>
           <v-btn> <v-icon>mdi-timer </v-icon>+ </v-btn>
           <v-spacer />
           <vac class="circle" :left-time="30000">
@@ -131,6 +131,14 @@ export default {
     }
   },
   methods: {
+    handleFifthyFiftyh() {
+      let index = Math.round(Math.random() * 2)
+      console.log(index)
+      this.question.incorrect_answers.splice(index, 1)
+      index = Math.round(Math.random() * 1)
+      console.log(index)
+      this.question.incorrect_answers.splice(index, 1)
+    },
     handleSelection(selectedAnser) {
       this.lockSelection = true
       this.$emit('setAnswer', this.shuffledAnsers[selectedAnser])
