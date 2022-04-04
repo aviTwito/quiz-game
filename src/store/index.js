@@ -12,13 +12,15 @@ const defaultCaregory = "Mixed";
 
 export default new Vuex.Store({
   state: {
+    categoriesFetched: false,
     questionsFetched: false,
     user: "",
+    score: 0,
     totalQuestions: 0,
     answredCorrect: 0,
     answredWrong: 0,
     questions: [],
-    categories: [{ id: -1, name: defaultCaregory }],
+    categories: [],
     selectedCategory: "",
     currentQuestion: null,
   },
@@ -44,7 +46,9 @@ export default new Vuex.Store({
       state.user = user;
     },
     setCategories(state, payload) {
+      state.categories.push({ id: -1, name: defaultCaregory });
       state.categories.push(...payload);
+      state.categoriesFetched = true;
     },
     setCurrentQuestion(state, payload) {
       state.currentQuestion = payload;
@@ -54,8 +58,9 @@ export default new Vuex.Store({
         state.currentQuestion = state.questions.pop();
       }
     },
-    setAnswer(state, payload) {
-      if (payload) {
+    setAnswer(state, { isCorrect, score }) {
+      if (isCorrect) {
+        state.score += score;
         state.answredCorrect++;
       } else {
         state.answredWrong++;
@@ -63,8 +68,8 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    setAnswer(state, payload) {
-      state.commit("setAnswer", payload);
+    setAnswer(state, { isCorrect, score }) {
+      state.commit("setAnswer", { isCorrect, score });
     },
     async startGame(state, category) {
       state.commit("setQuestiosFetched", false);
@@ -108,10 +113,13 @@ export default new Vuex.Store({
   },
   modules: {},
   getters: {
+    getCategoriesFetched: (state) => state.categoriesFetched,
     getQuestionsCount: (state) => state.totalQuestions,
     getWrongCount: (state) => state.answredWrong,
     getCorrectCount: (state) => state.answredCorrect,
     getQuestion: (state) => state.currentQuestion,
     getCategories: (state) => state.categories,
+    getUserName: (state) => state.user,
+    getScore: (state) => state.score,
   },
 });

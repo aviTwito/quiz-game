@@ -7,6 +7,7 @@
         v-if="question"
         :question="question"
       />
+      <!-- <question /> -->
     </v-col>
     <v-col v-if="questionAnswered">
       <v-btn @click="nextQuestion" primary>Next Question</v-btn></v-col
@@ -29,10 +30,9 @@ export default {
   methods: {
     ...mapActions(["nextQuestion", "setAnswer"]),
     setAnswerState(answer) {
-      console.log(answer === this.question.correct_answer);
-      answer === this.question.correct_answer
-        ? this.setAnswer(true)
-        : this.setAnswer(false);
+      answer.answer === this.question.correct_answer
+        ? this.setAnswer({ isCorrect: true, score: answer.score })
+        : this.setAnswer({ isCorrect: false, score: undefined });
       this.questionAnswered = true;
     },
   },
