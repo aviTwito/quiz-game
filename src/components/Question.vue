@@ -2,7 +2,19 @@
   <div>
     <v-card elevation="10" color="#a3abbf" class="ma-0 pa-0" flat>
       <v-card shaped flat rounded outlined color="primary">
-        <v-card-title class="white--text">{{ question.category }}</v-card-title>
+        <v-row align="center">
+          <v-col cols="9">
+            <v-card-title class="white--text">{{
+              question.category
+            }}</v-card-title>
+          </v-col>
+          <v-col cols="3">
+            <v-chip
+              v-text="question.difficulty"
+              :color="difficultyColor"
+            ></v-chip>
+          </v-col>
+        </v-row>
       </v-card>
       <v-card-title
         style="word-break: break-word"
@@ -56,67 +68,83 @@
 </template>
 
 <script>
-import { mdiCameraTimer } from "@mdi/js";
+import { mdiCameraTimer } from '@mdi/js'
 export default {
-  name: "Question",
+  name: 'Question',
   props: {
     question: {
       type: Object,
       default: () => {
         return {
-          category: "Geography",
-          type: "multiple",
-          difficulty: "easy",
+          category: 'Geography',
+          type: 'multiple',
+          difficulty: 'easy',
           question:
-            "Which city is the capital of the United States of America?",
-          correct_answer: "Washington D.C",
-          incorrect_answers: ["Seattle", "Albany", "Los Angeles"],
-        };
-      },
-    },
+            'Which city is the capital of the United States of America?',
+          correct_answer: 'Washington D.C',
+          incorrect_answers: ['Seattle', 'Albany', 'Los Angeles']
+        }
+      }
+    }
   },
 
   computed: {
+    difficultyColor() {
+      let color = ''
+      switch (this.question.difficulty) {
+        case 'easy':
+          color = 'success'
+          break
+        case 'medium':
+          color = 'warning'
+          break
+        case 'hard':
+          color = 'error'
+          break
+      }
+      return color
+    },
     shuffledAnsers() {
       const allAnsers = [
         this.question.correct_answer,
-        ...this.question.incorrect_answers,
-      ];
+        ...this.question.incorrect_answers
+      ]
       return allAnsers
         .map((value) => ({ value, sort: Math.random() }))
         .sort((a, b) => a.sort - b.sort)
-        .map(({ value }) => value);
+        .map(({ value }) => value)
     },
     handleClass() {
-      const context = this;
+      const context = this
       return function (index) {
-        let temp = "";
+        let temp = ''
         if (this.lockSelection) {
           const correctIndex = context.shuffledAnsers.findIndex(
             (x) => x == context.question.correct_answer
-          );
+          )
           if (context.selectedItem === index && correctIndex !== index)
-            temp = "wrong-answer";
-          if (correctIndex === index) temp = "correct-answer";
+            temp = 'wrong-answer'
+          if (correctIndex === index) temp = 'correct-answer'
         }
-        return temp;
-      };
-    },
+        return temp
+      }
+    }
   },
   methods: {
     handleSelection(selectedAnser) {
-      this.lockSelection = true;
-      this.$emit("setAnswer", this.shuffledAnsers[selectedAnser]);
-    },
+      this.lockSelection = true
+      this.$emit('setAnswer', this.shuffledAnsers[selectedAnser])
+    }
   },
   data: () => ({
+    score: 1000,
     icons: {
-      mdiCameraTimer,
+      mdiCameraTimer
     },
-    selectedItem: "",
-    lockSelection: false,
-  }),
-};
+    selectedItem: '',
+    lockSelection: false
+  })
+}
 </script>
 
 <style scoped>
@@ -139,7 +167,7 @@ export default {
   white-space: nowrap;
 }
 .circle:before {
-  content: "";
+  content: '';
   display: inline-block;
   vertical-align: middle;
   padding-top: 100%;
