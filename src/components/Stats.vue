@@ -2,7 +2,7 @@
   <v-card shaped outlined color="#3456a8" height="130">
     <v-row no-gutters>
       <v-col>
-        <v-card-title class="white--text">Player:Avi</v-card-title>
+        <v-card-title class="white--text">Player:{{ user }}</v-card-title>
       </v-col>
       <v-spacer></v-spacer>
       <v-divider vertical></v-divider>
@@ -22,22 +22,26 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters({ correct: "getCorrectCount", wrong: "getWrongCount" }),
+    ...mapGetters({
+      correct: 'getCorrectCount',
+      wrong: 'getWrongCount',
+      user: 'getUserName'
+    }),
     correctAnsers() {
-      return `Correct ${this.correct}`;
+      return `Correct ${this.correct}`
     },
     wrongAnswers() {
-      return `Wrong ${this.wrong}`;
+      return `Wrong ${this.wrong}`
     },
     columnClassed() {
-      return "white--text d-flex justify-center align-center";
-    },
-  },
-};
+      return 'white--text d-flex justify-center align-center'
+    }
+  }
+}
 </script>
 
 <style scoped>
