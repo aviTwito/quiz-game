@@ -32,21 +32,21 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters({
-      categories: 'getCategories',
-      categoriesFetched: 'getCategoriesFetched'
-    })
+      categories: "getCategories",
+      categoriesFetched: "getCategoriesFetched",
+    }),
   },
   data: () => ({
-    selection: ''
+    selection: "",
   }),
   watch: {
     selection(newVal) {
-      this.$emit('setCategory', this.categories[newVal])
-    }
-  }
-}
+      this.$emit("setCategory", this.categories[newVal]);
+    },
+  },
+};
 </script>

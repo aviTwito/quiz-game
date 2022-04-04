@@ -1,113 +1,115 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-const questiosUrl = 'https://opentdb.com/api.php?amount=100'
+const questiosUrl = "https://opentdb.com/api.php?amount=100";
 // const questionsByCatgoryUrl =
 //   "https://opentdb.com/api.php?amount=100&category=";
-const categoriesUrl = 'https://opentdb.com/api_category.php'
+const categoriesUrl = "https://opentdb.com/api_category.php";
 
-const defaultCaregory = 'Mixed'
+const defaultCaregory = "Mixed";
 
 export default new Vuex.Store({
   state: {
     categoriesFetched: false,
     questionsFetched: false,
-    user: '',
+    user: "",
+    score: 0,
     totalQuestions: 0,
     answredCorrect: 0,
     answredWrong: 0,
     questions: [],
     categories: [],
-    selectedCategory: '',
-    currentQuestion: null
+    selectedCategory: "",
+    currentQuestion: null,
   },
   mutations: {
     resetGame(state) {
-      state.totalQuestions = 0
-      state.answredCorrect = 0
-      state.answredWrong = 0
+      state.totalQuestions = 0;
+      state.answredCorrect = 0;
+      state.answredWrong = 0;
     },
     setQuestiosFetched(state, payload) {
-      state.questionsFetched = payload
+      state.questionsFetched = payload;
     },
     setQuestios(state, payload) {
-      state.questions = payload
-      state.totalQuestions = payload.length
-      state.questionsFetched = true
+      state.questions = payload;
+      state.totalQuestions = payload.length;
+      state.questionsFetched = true;
     },
     setCategory(state, paylod) {
-      state.selectedCategory = paylod
-      state.qeustions = state.qeustions.filter((x) => x.category === paylod)
+      state.selectedCategory = paylod;
+      state.qeustions = state.qeustions.filter((x) => x.category === paylod);
     },
     setUser(state, user) {
-      state.user = user
+      state.user = user;
     },
     setCategories(state, payload) {
-      state.categories.push({ id: -1, name: defaultCaregory })
-      state.categories.push(...payload)
-      state.categoriesFetched = true
+      state.categories.push({ id: -1, name: defaultCaregory });
+      state.categories.push(...payload);
+      state.categoriesFetched = true;
     },
     setCurrentQuestion(state, payload) {
-      state.currentQuestion = payload
+      state.currentQuestion = payload;
     },
     nextQuestion(state) {
       if (state.questions.length) {
-        state.currentQuestion = state.questions.pop()
+        state.currentQuestion = state.questions.pop();
       }
     },
-    setAnswer(state, payload) {
-      if (payload) {
-        state.answredCorrect++
+    setAnswer(state, { isCorrect, score }) {
+      if (isCorrect) {
+        state.score += score;
+        state.answredCorrect++;
       } else {
-        state.answredWrong++
+        state.answredWrong++;
       }
-    }
+    },
   },
   actions: {
-    setAnswer(state, payload) {
-      state.commit('setAnswer', payload)
+    setAnswer(state, { isCorrect, score }) {
+      state.commit("setAnswer", { isCorrect, score });
     },
     async startGame(state, category) {
-      state.commit('setQuestiosFetched', false)
+      state.commit("setQuestiosFetched", false);
       const response =
         category.id == -1
           ? await fetch(questiosUrl)
-          : await fetch(`${questiosUrl}&category=${category.id}`)
-      const qeustions = await response.json()
-      state.commit('setQuestios', qeustions.results)
-      state.commit('nextQuestion')
+          : await fetch(`${questiosUrl}&category=${category.id}`);
+      const qeustions = await response.json();
+      state.commit("setQuestios", qeustions.results);
+      state.commit("nextQuestion");
     },
     nextQuestion(state) {
-      state.commit('nextQuestion')
+      state.commit("nextQuestion");
     },
     async setQuestios(state) {
-      state.commit('setQuestiosFetched', false)
-      const response = await fetch(questiosUrl)
-      const qeustions = await response.json()
-      state.commit('setQuestios', qeustions.results)
+      state.commit("setQuestiosFetched", false);
+      const response = await fetch(questiosUrl);
+      const qeustions = await response.json();
+      state.commit("setQuestios", qeustions.results);
     },
     async setCategories(state) {
-      const response = await fetch(categoriesUrl)
-      const categories = await response.json()
-      state.commit('setCategories', categories.trivia_categories)
+      const response = await fetch(categoriesUrl);
+      const categories = await response.json();
+      state.commit("setCategories", categories.trivia_categories);
     },
     removeQeustion(state) {
       if (state.qeustions.length === 0) {
-        state.dispatch('setQuestios')
+        state.dispatch("setQuestios");
       } else {
-        state.qeustions.pop()
+        state.qeustions.pop();
       }
     },
     setCategory(state, category) {
       if (category !== defaultCaregory) {
-        state.commit('setCategory', category)
+        state.commit("setCategory", category);
       }
     },
     setUserName(state, user) {
-      state.commit('setUser', user)
-    }
+      state.commit("setUser", user);
+    },
   },
   modules: {},
   getters: {
@@ -117,6 +119,7 @@ export default new Vuex.Store({
     getCorrectCount: (state) => state.answredCorrect,
     getQuestion: (state) => state.currentQuestion,
     getCategories: (state) => state.categories,
-    getUserName: (state) => state.user
-  }
-})
+    getUserName: (state) => state.user,
+    getScore: (state) => state.score,
+  },
+});
