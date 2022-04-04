@@ -4,10 +4,16 @@
       <v-col cols="12" sm="7" md="6" lg="5">
         <v-sheet elevation="10" rounded="xl">
           <v-sheet class="pa-3 primary text-right" dark rounded="t-xl">
-            <h5 class="text--left">Select Category</h5>
+            <h5 class="text-left">Select Category</h5>
           </v-sheet>
 
           <div class="pa-4">
+            <v-skeleton-loader
+              class="mx-auto"
+              max-width="300"
+              type="table-row-divider"
+              v-if="!categoriesFetched"
+            ></v-skeleton-loader>
             <v-chip-group
               v-model="selection"
               mandatory
@@ -26,18 +32,21 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex'
 export default {
   computed: {
-    ...mapGetters({ categories: "getCategories" }),
+    ...mapGetters({
+      categories: 'getCategories',
+      categoriesFetched: 'getCategoriesFetched'
+    })
   },
   data: () => ({
-    selection: "",
+    selection: ''
   }),
   watch: {
     selection(newVal) {
-      this.$emit("setCategory", this.categories[newVal]);
-    },
-  },
-};
+      this.$emit('setCategory', this.categories[newVal])
+    }
+  }
+}
 </script>
