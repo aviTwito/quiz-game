@@ -116,6 +116,7 @@ export default new Vuex.Store({
     getWrongCount: (state) => state.answredWrong,
     getCorrectCount: (state) => state.answredCorrect,
     getQuestion: (state) => state.currentQuestion,
-    getCategories: (state) => state.categories
+    getCategories: (state) => state.categories,
+    getUserName: (state) => state.user
   }
 })
