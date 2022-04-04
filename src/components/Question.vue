@@ -1,30 +1,15 @@
 <template>
   <div>
-    <v-card color="#a3abbf" class="ma-0 pa-0" flat>
+    <v-card elevation="10" color="#a3abbf" class="ma-0 pa-0" flat>
       <v-card shaped flat rounded outlined color="primary">
         <v-card-title class="white--text">{{ question.category }}</v-card-title>
       </v-card>
-      <v-row>
-        <v-col cols="10">
-          <v-card-title
-            style="word-break: break-word"
-            class="white--text wrap--text"
-            v-text="question.question"
-          >
-          </v-card-title>
-        </v-col>
-        <v-col cols="2" class="text-right"
-          ><vac class="circle" :left-time="30000">
-            <span
-              class="white--text text-h5"
-              slot="process"
-              slot-scope="{ timeObj }"
-            >
-              {{ timeObj.ceil.s }}
-            </span>
-          </vac></v-col
-        >
-      </v-row>
+      <v-card-title
+        style="word-break: break-word"
+        class="white--text wrap--text"
+        v-text="question.question"
+      >
+      </v-card-title>
 
       <v-card-text>
         <v-list color="#a3abbf" class="pl-2">
@@ -49,16 +34,23 @@
           </v-list-item-group>
         </v-list>
       </v-card-text>
-      <v-row no-gutters>
-        <v-col cols="5">
-          <div class="action-buttons rounded-tr-xl">
-            <v-card-actions>
-              <v-btn>50/50</v-btn>
-              <v-btn> <v-icon>mdi-timer </v-icon>+ </v-btn>
-            </v-card-actions>
-          </div>
-        </v-col>
-      </v-row>
+
+      <div class="action-buttons rounded-tr-xl">
+        <v-card-actions>
+          <v-btn>50/50</v-btn>
+          <v-btn> <v-icon>mdi-timer </v-icon>+ </v-btn>
+          <v-spacer />
+          <vac class="circle" :left-time="30000">
+            <span
+              class="white--text text-h5"
+              slot="process"
+              slot-scope="{ timeObj }"
+            >
+              {{ timeObj.ceil.s }}
+            </span>
+          </vac>
+        </v-card-actions>
+      </div>
     </v-card>
   </div>
 </template>
@@ -117,7 +109,6 @@ export default {
       this.$emit("setAnswer", this.shuffledAnsers[selectedAnser]);
     },
   },
-
   data: () => ({
     icons: {
       mdiCameraTimer,

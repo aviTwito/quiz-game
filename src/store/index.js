@@ -109,8 +109,8 @@ export default new Vuex.Store({
   modules: {},
   getters: {
     getQuestionsCount: (state) => state.totalQuestions,
-    getWrongCount: (state) => state.answredCorrect,
-    getCorrectCount: (state) => state.answredWrong,
+    getWrongCount: (state) => state.answredWrong,
+    getCorrectCount: (state) => state.answredCorrect,
     getQuestion: (state) => state.currentQuestion,
     getCategories: (state) => state.categories,
   },
