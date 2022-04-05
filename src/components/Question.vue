@@ -19,7 +19,7 @@
       <v-card-title
         style="word-break: break-word"
         class="white--text wrap--text"
-        v-text="question.question"
+        v-html="question.question"
       >
       </v-card-title>
 
@@ -36,11 +36,11 @@
                 class="answer-option white--text panel"
                 :class="handleClass(i)"
                 v-for="(item, i) in shuffledAnsers"
-                :key="i"
+                :key="item"
                 @click="handleSelection(i)"
               >
                 <v-list-item-content>
-                  <v-list-item-title v-text="item"></v-list-item-title>
+                  <v-list-item-title v-html="item"></v-list-item-title>
                 </v-list-item-content>
                 <v-spacer />
               </v-list-item>
@@ -51,12 +51,21 @@
 
       <div class="action-buttons rounded-tr-xl">
         <v-card-actions>
-          <v-btn :disabled="fifthyFifthyUsed" @click="handleFifthyFiftyh"
+          <v-btn
+            color="primary"
+            :class="{ 'disable-events': fifthyFifthyUsed }"
+            @click="handleFifthyFiftyh"
             >50/50</v-btn
           >
-          <v-btn> <v-icon>mdi-timer </v-icon>+ </v-btn>
+          <v-btn
+            @click="addTime"
+            :class="{ 'disable-events': addTimeUsed }"
+            color="primary"
+          >
+            <v-icon color="white">mdi-timer </v-icon>+
+          </v-btn>
           <v-spacer />
-          <vac class="circle" :left-time="30000">
+          <vac ref="count-down-timer" class="circle" :left-time="time">
             <span
               class="white--text text-h5"
               slot="process"
@@ -136,6 +145,11 @@ export default {
     },
   },
   methods: {
+    addTime() {
+      this.addTimeUsed = true;
+      this.score -= 10;
+      this.time += 10000;
+    },
     setInitialScore(difficulty) {
       switch (difficulty) {
         case "easy":
@@ -158,6 +172,7 @@ export default {
       this.fifthyFifthyUsed = true;
     },
     handleSelection(selectedAnser) {
+      this.$refs["count-down-timer"].stopCountdown();
       this.lockSelection = true;
       this.fifthyFifthyUsed = true;
       this.$emit("setAnswer", {
@@ -170,7 +185,9 @@ export default {
     this.setInitialScore(this.question.difficulty);
   },
   data: () => ({
+    time: 30000,
     fifthyFifthyUsed: false,
+    addTimeUsed: false,
     score: 1000,
     icons: {
       mdiCameraTimer,
@@ -275,26 +292,15 @@ export default {
   box-shadow: 0 0 25px red;
 }
 
-.smooth-item {
-  overflow: visible;
-  transition: all 1s;
-  display: block;
-}
-
-.smooth-enter {
-  opacity: 0;
-}
-
-.smooth-leave-to {
-  opacity: 0;
-  transform: translateX(100%);
-}
-
-.smooth-leave-active {
-  position: absolute;
-}
-
-.smooth-move {
-  transition: transform 1s;
+.disable-events {
+  pointer-events: none;
+  opacity: 0.6;
+  background: linear-gradient(
+    to left top,
+    transparent 47.75%,
+    currentColor 49.5%,
+    currentColor 50.5%,
+    transparent 52.25%
+  );
 }
 </style>
