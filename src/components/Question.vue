@@ -30,7 +30,7 @@
             v-model="selectedItem"
             color="primary"
           >
-            <transition-group name="list-item" tag="div">
+            <transition-group name="list-item">
               <v-list-item
                 :disabled="lockSelection"
                 class="answer-option white--text panel"
@@ -183,7 +183,7 @@ export default {
 
 <style scoped>
 .panel {
-  transition: all 1s;
+  transition: all 0.3s ease-out;
 }
 
 .remove {
@@ -200,15 +200,16 @@ export default {
 }
 
 .list-item-enter {
-  transform: translateY(30%);
+  transform: translateY(10%);
 }
 
 .list-item-leave-to {
-  transform: translateX(300%);
+  /* transform: translateX(10%); */
+  transform: skew(300%);
 }
 
 .list-item-leave-active {
-  position: absolute;
+  position: relative;
 }
 
 .action-buttons {
