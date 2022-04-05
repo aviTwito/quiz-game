@@ -146,9 +146,13 @@ export default {
   },
   methods: {
     addTime() {
+      debugger;
+      this.$refs["count-down-timer"].stopCountdown();
+      const timeLeft = this.$refs["count-down-timer"].remainingTime;
+      this.$refs["count-down-timer"].leftTime = timeLeft + 10000;
+      this.$refs["count-down-timer"].startCountdown(true);
       this.addTimeUsed = true;
       this.score -= 10;
-      this.time += 10000;
     },
     setInitialScore(difficulty) {
       switch (difficulty) {
