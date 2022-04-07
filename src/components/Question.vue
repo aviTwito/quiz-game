@@ -3,12 +3,12 @@
     <v-card elevation="10" color="#a3abbf" class="ma-0 pa-0" flat>
       <v-card shaped flat rounded outlined color="primary">
         <v-row align="center">
-          <v-col cols="9">
+          <v-col c lg="9" sm="11">
             <v-card-title class="white--text">{{
               question.category
             }}</v-card-title>
           </v-col>
-          <v-col cols="3">
+          <v-col lg="3" sm="1">
             <v-chip
               v-text="question.difficulty"
               :color="difficultyColor"
