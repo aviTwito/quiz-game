@@ -12,6 +12,7 @@ const defaultCaregory = "Mixed";
 
 export default new Vuex.Store({
   state: {
+    scoreTable: [],
     categoriesFetched: false,
     questionsFetched: false,
     user: "",
@@ -68,6 +69,14 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    endGame(state) {
+      state.scoreTable.push({
+        user: state.user,
+        category: state.selectedCategory,
+        score: state.score,
+      });
+      state.score = 0;
+    },
     setAnswer(state, { isCorrect, score }) {
       state.commit("setAnswer", { isCorrect, score });
     },
