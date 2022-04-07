@@ -53,7 +53,7 @@
         <v-card-actions>
           <v-btn
             color="primary"
-            :class="{ 'disable-events': fifthyFifthyUsed }"
+            :class="{ 'disable-events': fifthyFifthyDisabled }"
             @click="handleFifthyFiftyh"
             >50/50</v-btn
           >
@@ -65,7 +65,12 @@
             <v-icon color="white">mdi-timer </v-icon>+
           </v-btn>
           <v-spacer />
-          <vac ref="count-down-timer" class="circle" :left-time="time">
+          <vac
+            @finish="timeFinished"
+            ref="count-down-timer"
+            class="circle"
+            :left-time="time"
+          >
             <span
               class="white--text text-h5"
               slot="process"
@@ -103,6 +108,9 @@ export default {
   },
 
   computed: {
+    fifthyFifthyDisabled() {
+      return this.question.type === "boolean" || this.fifthyFifthyUsed;
+    },
     difficultyColor() {
       let color = "";
       switch (this.question.difficulty) {
@@ -145,6 +153,16 @@ export default {
     },
   },
   methods: {
+    timeFinished() {
+      this.fifthyFifthyUsed = true;
+      this.addTimeUsed = true;
+      this.lockSelection = true;
+      this.selectedItem = this.question.correct_answer;
+      this.$emit("setAnswer", {
+        answer: "",
+        score: this.score,
+      });
+    },
     addTime() {
       debugger;
       this.$refs["count-down-timer"].stopCountdown();
@@ -179,6 +197,7 @@ export default {
       this.$refs["count-down-timer"].stopCountdown();
       this.lockSelection = true;
       this.fifthyFifthyUsed = true;
+      this.addTimeUsed = true;
       this.$emit("setAnswer", {
         answer: this.shuffledAnsers[selectedAnser],
         score: this.score,
