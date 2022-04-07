@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-const questiosUrl = "https://opentdb.com/api.php?amount=2";
+const questiosUrl = "https://opentdb.com/api.php?amount=10";
 // const questionsByCatgoryUrl =
 //   "https://opentdb.com/api.php?amount=100&category=";
 const categoriesUrl = "https://opentdb.com/api_category.php";
