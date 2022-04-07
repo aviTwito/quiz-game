@@ -3,12 +3,12 @@
     <v-card elevation="10" color="#a3abbf" class="ma-0 pa-0" flat>
       <v-card shaped flat rounded outlined color="primary">
         <v-row align="center">
-          <v-col cols="9">
+          <v-col c lg="9" sm="11">
             <v-card-title class="white--text">{{
               question.category
             }}</v-card-title>
           </v-col>
-          <v-col cols="3">
+          <v-col lg="3" sm="1">
             <v-chip
               v-text="question.difficulty"
               :color="difficultyColor"
@@ -19,7 +19,7 @@
       <v-card-title
         style="word-break: break-word"
         class="white--text wrap--text"
-        v-text="question.question"
+        v-html="question.question"
       >
       </v-card-title>
 
@@ -36,11 +36,11 @@
                 class="answer-option white--text panel"
                 :class="handleClass(i)"
                 v-for="(item, i) in shuffledAnsers"
-                :key="i"
+                :key="item"
                 @click="handleSelection(i)"
               >
                 <v-list-item-content>
-                  <v-list-item-title v-text="item"></v-list-item-title>
+                  <v-list-item-title v-html="item"></v-list-item-title>
                 </v-list-item-content>
                 <v-spacer />
               </v-list-item>
@@ -51,12 +51,26 @@
 
       <div class="action-buttons rounded-tr-xl">
         <v-card-actions>
-          <v-btn :disabled="fifthyFifthyUsed" @click="handleFifthyFiftyh"
+          <v-btn
+            color="primary"
+            :class="{ 'disable-events': fifthyFifthyDisabled }"
+            @click="handleFifthyFiftyh"
             >50/50</v-btn
           >
-          <v-btn> <v-icon>mdi-timer </v-icon>+ </v-btn>
+          <v-btn
+            @click="addTime"
+            :class="{ 'disable-events': addTimeUsed }"
+            color="primary"
+          >
+            <v-icon color="white">mdi-timer </v-icon>+
+          </v-btn>
           <v-spacer />
-          <vac class="circle" :left-time="30000">
+          <vac
+            @finish="timeFinished"
+            ref="count-down-timer"
+            class="circle"
+            :left-time="time"
+          >
             <span
               class="white--text text-h5"
               slot="process"
@@ -94,6 +108,9 @@ export default {
   },
 
   computed: {
+    fifthyFifthyDisabled() {
+      return this.question.type === "boolean" || this.fifthyFifthyUsed;
+    },
     difficultyColor() {
       let color = "";
       switch (this.question.difficulty) {
@@ -136,6 +153,25 @@ export default {
     },
   },
   methods: {
+    timeFinished() {
+      this.fifthyFifthyUsed = true;
+      this.addTimeUsed = true;
+      this.lockSelection = true;
+      this.selectedItem = this.question.correct_answer;
+      this.$emit("setAnswer", {
+        answer: "",
+        score: this.score,
+      });
+    },
+    addTime() {
+      debugger;
+      this.$refs["count-down-timer"].stopCountdown();
+      const timeLeft = this.$refs["count-down-timer"].remainingTime;
+      this.$refs["count-down-timer"].leftTime = timeLeft + 10000;
+      this.$refs["count-down-timer"].startCountdown(true);
+      this.addTimeUsed = true;
+      this.score -= 10;
+    },
     setInitialScore(difficulty) {
       switch (difficulty) {
         case "easy":
@@ -158,8 +194,10 @@ export default {
       this.fifthyFifthyUsed = true;
     },
     handleSelection(selectedAnser) {
+      this.$refs["count-down-timer"].stopCountdown();
       this.lockSelection = true;
       this.fifthyFifthyUsed = true;
+      this.addTimeUsed = true;
       this.$emit("setAnswer", {
         answer: this.shuffledAnsers[selectedAnser],
         score: this.score,
@@ -170,7 +208,9 @@ export default {
     this.setInitialScore(this.question.difficulty);
   },
   data: () => ({
+    time: 30000,
     fifthyFifthyUsed: false,
+    addTimeUsed: false,
     score: 1000,
     icons: {
       mdiCameraTimer,
@@ -275,26 +315,15 @@ export default {
   box-shadow: 0 0 25px red;
 }
 
-.smooth-item {
-  overflow: visible;
-  transition: all 1s;
-  display: block;
-}
-
-.smooth-enter {
-  opacity: 0;
-}
-
-.smooth-leave-to {
-  opacity: 0;
-  transform: translateX(100%);
-}
-
-.smooth-leave-active {
-  position: absolute;
-}
-
-.smooth-move {
-  transition: transform 1s;
+.disable-events {
+  pointer-events: none;
+  opacity: 0.6;
+  background: linear-gradient(
+    to left top,
+    transparent 47.75%,
+    currentColor 49.5%,
+    currentColor 50.5%,
+    transparent 52.25%
+  );
 }
 </style>
