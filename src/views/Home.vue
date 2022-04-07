@@ -3,10 +3,17 @@
    
     <start-game />
   </div> -->
-  <v-container fill-height fluid>
+  <v-container fluid>
     <v-row align="center" justify="center">
-      <v-col md="6">
-        <categories @setCategory="setCategory" />
+      <v-col cols="12">
+        <v-expansion-panels flat accordion>
+          <v-expansion-panel>
+            <v-expansion-panel-header>Categories</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <categories @setCategory="setCategory" />
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </v-col>
     </v-row>
     <v-row align="center" justify="center">
@@ -36,8 +43,15 @@ export default {
     },
   },
   data: () => ({
-    selectedCategory: {},
+    selectedCategory: { id: -1, name: "Mixed" },
   }),
+  watch: {
+    panel(newVal) {
+      if (!(newVal && newVal.length)) {
+        this.panel = [0];
+      }
+    },
+  },
   components: {
     startGame,
     Categories,

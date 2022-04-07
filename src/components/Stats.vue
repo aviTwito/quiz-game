@@ -5,7 +5,6 @@
         <v-card-title class="white--text">Player:{{ user }}</v-card-title>
       </v-col>
       <v-spacer></v-spacer>
-      <v-divider vertical></v-divider>
     </v-row>
 
     <v-divider light></v-divider>

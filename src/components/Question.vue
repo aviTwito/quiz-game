@@ -2,19 +2,20 @@
   <div>
     <v-card elevation="10" color="#a3abbf" class="ma-0 pa-0" flat>
       <v-card shaped flat rounded outlined color="primary">
-        <v-row align="center">
-          <v-col c lg="9" sm="11">
-            <v-card-title class="white--text">{{
-              question.category
-            }}</v-card-title>
-          </v-col>
-          <v-col lg="3" sm="1">
-            <v-chip
-              v-text="question.difficulty"
-              :color="difficultyColor"
-            ></v-chip>
-          </v-col>
-        </v-row>
+        <v-card-title class="white--text">{{ question.category }}</v-card-title>
+        <v-card-text>
+          <v-row no-gutters align="center" justify="center">
+            <v-col class="d-flex align-center justify-center" cols="6"
+              ><v-chip
+                v-text="question.difficulty"
+                :color="difficultyColor"
+              ></v-chip>
+            </v-col>
+            <v-col class="d-flex align-center justify-center" cols="6"
+              ><v-chip color="secondary">Current Score: {{ score }}</v-chip>
+            </v-col>
+          </v-row>
+        </v-card-text>
       </v-card>
       <v-card-title
         style="word-break: break-word"
@@ -64,6 +65,7 @@
           >
             <v-icon color="white">mdi-timer </v-icon>+
           </v-btn>
+
           <v-spacer />
           <vac
             @finish="timeFinished"
@@ -158,13 +160,13 @@ export default {
       this.addTimeUsed = true;
       this.lockSelection = true;
       this.selectedItem = this.question.correct_answer;
+      this.score = 0;
       this.$emit("setAnswer", {
         answer: "",
         score: this.score,
       });
     },
     addTime() {
-      debugger;
       this.$refs["count-down-timer"].stopCountdown();
       const timeLeft = this.$refs["count-down-timer"].remainingTime;
       this.$refs["count-down-timer"].leftTime = timeLeft + 10000;
@@ -184,6 +186,7 @@ export default {
           this.score = 150;
           break;
       }
+      if (this.question.type === "boolean") this.score /= 2;
     },
     handleFifthyFiftyh() {
       let index = Math.round(Math.random() * 2);
@@ -325,5 +328,9 @@ export default {
     currentColor 50.5%,
     transparent 52.25%
   );
+}
+
+.v-divider {
+  border-color: white !important;
 }
 </style>
