@@ -43,8 +43,15 @@ export default {
     },
   },
   data: () => ({
-    selectedCategory: {},
+    selectedCategory: { id: -1, name: "Mixed" },
   }),
+  watch: {
+    panel(newVal) {
+      if (!(newVal && newVal.length)) {
+        this.panel = [0];
+      }
+    },
+  },
   components: {
     startGame,
     Categories,

@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-const questiosUrl = "https://opentdb.com/api.php?amount=100";
+const questiosUrl = "https://opentdb.com/api.php?amount=2";
 // const questionsByCatgoryUrl =
 //   "https://opentdb.com/api.php?amount=100&category=";
 const categoriesUrl = "https://opentdb.com/api_category.php";
@@ -27,6 +27,7 @@ export default new Vuex.Store({
   },
   mutations: {
     resetGame(state) {
+      state.score = 0;
       state.totalQuestions = 0;
       state.answredCorrect = 0;
       state.answredWrong = 0;
@@ -35,13 +36,13 @@ export default new Vuex.Store({
       state.questionsFetched = payload;
     },
     setQuestios(state, payload) {
+      console.log(payload);
       state.questions = payload;
       state.totalQuestions = payload.length;
       state.questionsFetched = true;
     },
     setCategory(state, paylod) {
       state.selectedCategory = paylod;
-      state.qeustions = state.qeustions.filter((x) => x.category === paylod);
     },
     setUser(state, user) {
       state.user = user;
@@ -69,18 +70,23 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    resetGame(state) {
+      state.commit("resetGame");
+    },
     endGame(state) {
-      state.scoreTable.push({
-        user: state.user,
-        category: state.selectedCategory,
-        score: state.score,
-      });
+      // state.scoreTable.push({
+      //   user: state.user,
+      //   category: state.selectedCategory,
+      //   score: state.score,
+      // });
       state.score = 0;
     },
     setAnswer(state, { isCorrect, score }) {
       state.commit("setAnswer", { isCorrect, score });
     },
     async startGame(state, category) {
+      console.log(category);
+      state.commit("setCategory", category);
       state.commit("setQuestiosFetched", false);
       const response =
         category.id == -1
@@ -112,9 +118,7 @@ export default new Vuex.Store({
       }
     },
     setCategory(state, category) {
-      if (category !== defaultCaregory) {
-        state.commit("setCategory", category);
-      }
+      state.commit("setCategory", category);
     },
     setUserName(state, user) {
       state.commit("setUser", user);
@@ -123,12 +127,14 @@ export default new Vuex.Store({
   modules: {},
   getters: {
     getCategoriesFetched: (state) => state.categoriesFetched,
-    getQuestionsCount: (state) => state.totalQuestions,
     getWrongCount: (state) => state.answredWrong,
     getCorrectCount: (state) => state.answredCorrect,
     getQuestion: (state) => state.currentQuestion,
     getCategories: (state) => state.categories,
     getUserName: (state) => state.user,
     getScore: (state) => state.score,
+    getScoreTable: (state) => state.scoreTable,
+    getQuestionsCount: (state) => state.questions.length,
+    getSelectedCategory: (state) => state.selectedCategory,
   },
 });
