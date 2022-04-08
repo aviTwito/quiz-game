@@ -3,19 +3,6 @@
     <v-card elevation="10" color="#a3abbf" class="ma-0 pa-0" flat>
       <v-card shaped flat rounded outlined color="primary">
         <v-card-title class="white--text">{{ question.category }}</v-card-title>
-        <v-card-text>
-          <v-row no-gutters align="center" justify="center">
-            <v-col class="d-flex align-center justify-center" cols="6"
-              ><v-chip
-                v-text="question.difficulty"
-                :color="difficultyColor"
-              ></v-chip>
-            </v-col>
-            <v-col class="d-flex align-center justify-center" cols="6"
-              ><v-chip color="secondary">Current Score: {{ score }}</v-chip>
-            </v-col>
-          </v-row>
-        </v-card-text>
       </v-card>
       <v-card-title
         style="word-break: break-word"
@@ -49,7 +36,19 @@
           </v-list-item-group>
         </v-list>
       </v-card-text>
-
+      <v-card-text class="d-flex align-start justify-start">
+        <v-row no-gutters>
+          <v-col class="d-flex align-start justify-start" cols="4"
+            ><v-chip
+              v-text="question.difficulty"
+              :color="difficultyColor"
+            ></v-chip>
+          </v-col>
+          <v-col class="d-flex align-start justify-start" cols="4"
+            ><v-chip color="secondary">Current Score: {{ score }}</v-chip>
+          </v-col>
+        </v-row>
+      </v-card-text>
       <div class="action-buttons rounded-tr-xl">
         <v-card-actions>
           <v-btn
