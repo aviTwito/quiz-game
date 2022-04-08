@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-const questiosUrl = "https://opentdb.com/api.php?amount=100";
+const questiosUrl = "https://opentdb.com/";
 // const questionsByCatgoryUrl =
 //   "https://opentdb.com/api.php?amount=100&category=";
 const categoriesUrl = "https://opentdb.com/api_category.php";
@@ -12,6 +12,7 @@ const defaultCaregory = "Mixed";
 
 export default new Vuex.Store({
   state: {
+    numberOfQuestionToFetch: 50,
     scoreTable: [],
     categoriesFetched: false,
     questionsFetched: false,
@@ -75,8 +76,14 @@ export default new Vuex.Store({
         score: state.score,
       });
     },
+    setNumberOfQuestions(state, numberOfQuestions) {
+      state.numberOfQuestionToFetch = numberOfQuestions;
+    },
   },
   actions: {
+    setNumberOfQuestions(state, numberOfQuestions) {
+      state.commit("setNumberOfQuestions", numberOfQuestions);
+    },
     resetGame(state) {
       state.commit("resetGame");
     },
@@ -86,16 +93,19 @@ export default new Vuex.Store({
     setAnswer(state, { isCorrect, score }) {
       state.commit("setAnswer", { isCorrect, score });
     },
-    async startGame(state, category) {
-      state.commit("setCategory", category);
-      state.commit("setQuestiosFetched", false);
+    async startGame({ commit, state }, category) {
+      console.log(state.numberOfQuestionToFetch);
+      commit("setCategory", category);
+      commit("setQuestiosFetched", false);
       const response =
         category.id == -1
-          ? await fetch(questiosUrl)
+          ? await fetch(
+              `${questiosUrl}api.php?amount=${state.numberOfQuestionToFetch}`
+            )
           : await fetch(`${questiosUrl}&category=${category.id}`);
       const qeustions = await response.json();
-      state.commit("setQuestios", qeustions.results);
-      state.commit("nextQuestion");
+      commit("setQuestios", qeustions.results);
+      commit("nextQuestion");
     },
     nextQuestion(state) {
       state.commit("nextQuestion");

@@ -41,7 +41,9 @@
       <v-card-actions>
         <v-row align="center">
           <v-col cols="6">
-            <v-btn class="white--text" color="#3456a8">Home</v-btn>
+            <v-btn @click="goHome" class="white--text" color="#3456a8"
+              >Home</v-btn
+            >
           </v-col>
           <v-col cols="6">
             <v-btn @click="newGame" class="white--text" color="#3456a8"
@@ -83,6 +85,9 @@ export default {
     }),
   },
   methods: {
+    goHome() {
+      this.$router.push("/");
+    },
     newGame() {
       this.$emit("startGame");
     },
