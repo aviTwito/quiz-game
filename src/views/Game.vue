@@ -20,12 +20,10 @@ export default {
     Stats,
   },
   methods: {
-    ...mapActions(["startGame", "endGame", "resetGame"]),
+    ...mapActions(["startGame", "resetGame"]),
     newGame() {
-      console.log("Starting new game");
       this.resetGame();
-      this.endGame();
-      console.log(this.category);
+
       this.startGame(this.category);
 
       this.$forceUpdate();

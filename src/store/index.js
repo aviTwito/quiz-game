@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-const questiosUrl = "https://opentdb.com/api.php?amount=10";
+const questiosUrl = "https://opentdb.com/api.php?amount=100";
 // const questionsByCatgoryUrl =
 //   "https://opentdb.com/api.php?amount=100&category=";
 const categoriesUrl = "https://opentdb.com/api_category.php";
@@ -36,10 +36,10 @@ export default new Vuex.Store({
       state.questionsFetched = payload;
     },
     setQuestios(state, payload) {
-      console.log(payload);
       state.questions = payload;
       state.totalQuestions = payload.length;
       state.questionsFetched = true;
+      state.score = 0;
     },
     setCategory(state, paylod) {
       state.selectedCategory = paylod;
@@ -68,24 +68,25 @@ export default new Vuex.Store({
         state.answredWrong++;
       }
     },
+    endGame(state) {
+      state.scoreTable.push({
+        user: state.user,
+        category: state.selectedCategory.name,
+        score: state.score,
+      });
+    },
   },
   actions: {
     resetGame(state) {
       state.commit("resetGame");
     },
     endGame(state) {
-      // state.scoreTable.push({
-      //   user: state.user,
-      //   category: state.selectedCategory,
-      //   score: state.score,
-      // });
-      state.score = 0;
+      state.commit("endGame");
     },
     setAnswer(state, { isCorrect, score }) {
       state.commit("setAnswer", { isCorrect, score });
     },
     async startGame(state, category) {
-      console.log(category);
       state.commit("setCategory", category);
       state.commit("setQuestiosFetched", false);
       const response =

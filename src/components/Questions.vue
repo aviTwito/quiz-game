@@ -38,13 +38,15 @@ export default {
     }),
   },
   methods: {
-    ...mapActions(["nextQuestion", "setAnswer"]),
+    ...mapActions(["nextQuestion", "setAnswer", "endGame"]),
     setAnswerState(answer) {
       answer.answer === this.question.correct_answer
         ? this.setAnswer({ isCorrect: true, score: answer.score })
         : this.setAnswer({ isCorrect: false, score: undefined });
       this.questionAnswered = true;
       if (this.questionCount === 0) {
+        this.questionAnswered = false;
+        this.endGame();
         setTimeout(() => {
           this.finishedDialog = true;
         }, 2000);
@@ -52,7 +54,7 @@ export default {
     },
     start() {
       this.finishedDialog = false;
-      console.log("emitting new game");
+
       this.$emit("newGame");
     },
   },
