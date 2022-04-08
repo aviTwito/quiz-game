@@ -44,7 +44,7 @@
               :color="difficultyColor"
             ></v-chip>
           </v-col>
-          <v-col class="d-flex align-start justify-start" cols="4"
+          <v-col class="d-flex align-start justify-start" cols="8"
             ><v-chip color="secondary">Current Score: {{ score }}</v-chip>
           </v-col>
         </v-row>
