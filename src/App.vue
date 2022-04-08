@@ -6,7 +6,7 @@
       <v-btn @click="scoreBoarDialog = true" small color="secondary"
         >Score Board</v-btn
       >
-      <v-btn icon color="white">
+      <v-btn @click="settingsDialog = true" icon color="white">
         <v-icon>mdi-cog</v-icon>
       </v-btn>
     </v-app-bar>
@@ -18,6 +18,15 @@
     >
       <score-board @dialogClosed="closeDialog" />
     </v-dialog>
+    <v-dialog
+      width="500"
+      height="500"
+      hide-overlay
+      transition="dialog-bottom-transition"
+      v-model="settingsDialog"
+    >
+      <settings @settingSet="closeSettingsDialog" />
+    </v-dialog>
     <v-main>
       <router-view />
     </v-main>
@@ -26,6 +35,7 @@
 
 <script>
 import ScoreBoard from "../src/components/ScoreBoard.vue";
+import Settings from "../src/components/Settings.vue";
 export default {
   name: "App",
   mounted() {
@@ -33,14 +43,19 @@ export default {
   },
   components: {
     ScoreBoard,
+    Settings,
   },
   methods: {
     closeDialog() {
       this.scoreBoarDialog = false;
     },
+    closeSettingsDialog() {
+      this.settingsDialog = false;
+    },
   },
   data: () => ({
     scoreBoarDialog: false,
+    settingsDialog: false,
   }),
 };
 </script>
