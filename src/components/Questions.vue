@@ -11,7 +11,6 @@
           v-if="question"
           :question="question"
         />
-        <!-- <question /> -->
       </v-col>
       <v-col v-if="questionAnswered">
         <v-btn @click="nextQuestion" primary>Next Question</v-btn></v-col
