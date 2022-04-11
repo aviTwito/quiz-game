@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app flat color="primary">
-      <v-toolbar-title class="white--text">Monday-U Quiz Game</v-toolbar-title>
+      <v-toolbar-title class="white--text">Quiz Game</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn @click="scoreBoarDialog = true" small color="secondary"
         >Score Board</v-btn
