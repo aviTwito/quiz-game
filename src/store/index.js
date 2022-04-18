@@ -94,7 +94,6 @@ export default new Vuex.Store({
       state.commit("setAnswer", { isCorrect, score });
     },
     async startGame({ commit, state }, category) {
-      console.log(state.numberOfQuestionToFetch);
       commit("setCategory", category);
       commit("setQuestiosFetched", false);
       const response =
@@ -102,7 +101,10 @@ export default new Vuex.Store({
           ? await fetch(
               `${questiosUrl}api.php?amount=${state.numberOfQuestionToFetch}`
             )
-          : await fetch(`${questiosUrl}&category=${category.id}`);
+          : await fetch(
+              `${questiosUrl}api.php?amount=${state.numberOfQuestionToFetch}&category=${category.id}`
+            );
+
       const qeustions = await response.json();
       commit("setQuestios", qeustions.results);
       commit("nextQuestion");
